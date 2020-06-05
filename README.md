@@ -1,7 +1,11 @@
 # Laravel Docker
 
-[View On Github](https://github.com/agweria/laravel-docker)
 Nginx & PHP 7 web server.
+
+[View On Github](https://github.com/agweria/laravel-docker)
+[View Image](https://hub.docker.com/r/agweria/laravel-docker)
+[![DockerHub](https://img.shields.io/docker/pulls/agweria/laravel-docker.svg)](https://hub.docker.com/r/agweria/laravel-docker)
+
 
 ## Build
 
@@ -42,7 +46,7 @@ Here are some configurable environment values.
 - `COMPOSER_UPDATE_ON_BUILD` - Should `composer update` run on build. Default: `0`.
 - `RUN_SCHEDULER` - Should the Laravel scheduler command run. Default: `0`.
 - `RUN_MIGRATIONS` - Should the migrate command run during build. Default: `0`.
-- `GENERATE_PASSPORT_KEYS` - Should the system generate passport keys  (see documentation)[https://laravel.com/docs/7.x/passport#deploying-passport]
+- `GENERATE_PASSPORT_KEYS` - Should the system generate passport keys  [see documentation](https://laravel.com/docs/7.x/passport#deploying-passport)
 - `PRODUCTION` – Is this a production environment. Default: `1`
 - `PHP_MEMORY_LIMIT` - PHP memory limit. Default: `128M`
 - `PHP_POST_MAX_SIZE` - Maximum POST size. Default: `50M`
@@ -56,4 +60,4 @@ To enable laravel queues just set environment `ENABLE QUEUES` to `1`
 
 ### Enable Laravel horizon queue
 
-To enable laravel horizon queue just set environment `START_HORIZON` to `1`. See (documentation)[https://laravel.com/docs/7.x/horizon#running-horizon]
+To enable laravel horizon queue just set environment `START_HORIZON` to `1`. See [documentation](https://laravel.com/docs/7.x/horizon#running-horizon)

@@ -63,5 +63,17 @@ fi
 
 find /etc/php7/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
+
+
 # START SUPERVISOR.
 exec /usr/bin/supervisord -n -c /etc/supervisord.conf
+
+if [[ "${ENABLE QUEUES}" =="1" ]]; then
+    echo 'Enabling queues'
+    exec /usr/bin/supervisord -c /etc/supervisord-queues.conf
+fi
+
+if [[ "${START_HORIZON}" =="1" ]]; then
+    echo 'Enabling horizon queues'
+    exec /usr/bin/supervisord -c /etc/supervisord-horizon.conf
+fi

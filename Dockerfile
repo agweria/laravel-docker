@@ -65,8 +65,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # ADD START SCRIPT, SUPERVISOR CONFIG, NGINX CONFIG AND RUN SCRIPTS.
 ADD entrypoint.sh /entrypoint.sh
 ADD config/supervisor/supervisord.conf /etc/supervisord.conf
-ADD config/supervisor/supervisord-queues.conf /etc/supervisord.conf
-ADD config/supervisor/supervisord-horizon.conf /etc/supervisord.conf
+ADD config/supervisor/supervisord-queues.conf /etc/supervisord-queues.conf
+ADD config/supervisor/supervisord-horizon.conf /etc/supervisord-horizon.conf
 ADD config/nginx/nginx.conf /etc/nginx/nginx.conf
 ADD config/nginx/site.conf /etc/nginx/sites-available/default.conf
 ADD config/php/php.ini /etc/php7/php.ini

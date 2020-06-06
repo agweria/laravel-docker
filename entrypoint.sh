@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # UPDATE THE WEBROOT IF REQUIRED.
-if [[ ! -z "${WEBROOT}" ]] && [[ ! -z "${WEBROOT_PUBLIC}" ]]; then
+if [[ -n "${WEBROOT}" ]] && [[ -n "${WEBROOT_PUBLIC}" ]]; then
     sed -i "s#root /var/www/public;#root ${WEBROOT_PUBLIC};#g" /etc/nginx/sites-available/default.conf
 else
     export WEBROOT=/var/www
@@ -10,15 +10,15 @@ fi
 
 # UPDATE COMPOSER PACKAGES ON BUILD.
 ## 💡 THIS MAY MAKE THE BUILD SLOWER BECAUSE IT HAS TO FETCH PACKAGES.
-if [[ ! -z "${COMPOSER_DIRECTORY}" ]] && [[ "${COMPOSER_UPDATE_ON_BUILD}" == "1" ]]; then
-    cd ${COMPOSER_DIRECTORY}
+if [[ -n "${COMPOSER_DIRECTORY}" ]] && [[ "${COMPOSER_UPDATE_ON_BUILD}" == "1" ]]; then
+    cd "${COMPOSER_DIRECTORY}"
     composer update && composer dump-autoload -o
 fi
 
 
 # RUN LARAVEL MIGRATIONS ON BUILD.
 if [[ "${RUN_MIGRATIONS}" == "1" ]]; then
-    cd ${WEBROOT}
+    cd "${WEBROOT}"
     php artisan migrate --force
 fi
 
@@ -48,15 +48,15 @@ else
 fi
 
 # PHP & SERVER CONFIGURATIONS.
-if [[ ! -z "${PHP_MEMORY_LIMIT}" ]]; then
+if [[ -n "${PHP_MEMORY_LIMIT}" ]]; then
     sed -i "s/memory_limit = 128M/memory_limit = ${PHP_MEMORY_LIMIT}M/g" /etc/php7/conf.d/php.ini
 fi
 
-if [ ! -z "${PHP_POST_MAX_SIZE}" ]; then
+if [ -n "${PHP_POST_MAX_SIZE}" ]; then
     sed -i "s/post_max_size = 50M/post_max_size = ${PHP_POST_MAX_SIZE}M/g" /etc/php7/conf.d/php.ini
 fi
 
-if [ ! -z "${PHP_UPLOAD_MAX_FILESIZE}" ]; then
+if [ -n "${PHP_UPLOAD_MAX_FILESIZE}" ]; then
     sed -i "s/upload_max_filesize = 40M/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}M/g" /etc/php7/conf.d/php.ini
 fi
 
@@ -66,14 +66,16 @@ find /etc/php7/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {}
 
 
 # START SUPERVISOR.
-exec /usr/bin/supervisord -n -c /etc/supervisord.conf
 
-if [[ "${ENABLE QUEUES}" =="1" ]]; then
+
+if [[ "${ENABLE_QUEUES}" == "1" ]]; then
     echo 'Enabling queues'
-    exec /usr/bin/supervisord -c /etc/supervisord-queues.conf
+    cat /etc/supervisord-queues.conf >> /etc/supervisord.conf
 fi
 
-if [[ "${START_HORIZON}" =="1" ]]; then
+if [[ "${START_HORIZON}" == "1" ]]; then
     echo 'Enabling horizon queues'
-    exec /usr/bin/supervisord -c /etc/supervisord-horizon.conf
+    cat /etc/supervisord-horizon.conf >> /etc/supervisord.conf
 fi
+
+exec /usr/bin/supervisord -n -c /etc/supervisord.conf

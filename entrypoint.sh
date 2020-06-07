@@ -40,7 +40,7 @@ ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.c
 # PRODUCTION LEVEL CONFIGURATION.
 if [[ "${PRODUCTION}" == "1" ]]; then
     sed -i -e "s/;log_level = notice/log_level = warning/g" /etc/php7/php-fpm.conf
-    sed -i -e "s/clear_env = no/clear_env = yes/g" /etc/php7/php-fpm.d/www.conf
+    # sed -i -e "s/clear_env = no/clear_env = yes/g" /etc/php7/php-fpm.d/www.conf
     sed -i -e "s/display_errors = On/display_errors = Off/g" /etc/php7/php.ini
 else
     sed -i -e "s/;log_level = notice/log_level = notice/g" /etc/php7/php-fpm.conf

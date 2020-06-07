@@ -84,7 +84,6 @@ WORKDIR /var/www
 RUN mkdir -p ./storage/logs ./bootstrap/cache
 RUN touch ./storage/logs/worker.log
 RUN touch ./storage/logs/horizon.log
-RUN chmod -Rfv 777 ./storage/ ./bootstrap/cache
 
 # KICKSTART!
 CMD ["/entrypoint.sh"]
